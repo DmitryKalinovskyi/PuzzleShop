@@ -26,7 +26,7 @@ namespace PuzzleShop.Models
 
         public int Amount { get; set; }
 
-
+        public int BrandId { get; set; }
         // Reference navigation properties
 
         [NotNull]
