@@ -5,11 +5,11 @@ namespace PuzzleShop.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class GraphQLController : ControllerBase
+    public class PuzzleController : ControllerBase
     {
-        private readonly ILogger<GraphQLController> _logger;
+        private readonly ILogger<PuzzleController> _logger;
 
-        public GraphQLController(ILogger<GraphQLController> logger)
+        public PuzzleController(ILogger<PuzzleController> logger)
         {
             _logger = logger;
         }
@@ -19,7 +19,6 @@ namespace PuzzleShop.Controllers
         public IEnumerable<Puzzle> Get()
         {
             _logger.LogInformation("Requested info");
-
             return Enumerable.Range(1, 5).Select(index => new Puzzle
             {
                 Id=index,

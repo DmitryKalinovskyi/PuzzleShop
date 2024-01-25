@@ -31,7 +31,5 @@ namespace PuzzleShop.Models
 
         [NotNull]
         public Brand Brand { get; set; }
-
-
     }
 }
