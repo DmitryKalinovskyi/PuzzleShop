@@ -12,6 +12,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Add automapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 // Initialize db context
 builder.Services.AddDbContext<PuzzleShopContext>(
         options => options.UseSqlServer(builder.Configuration.GetConnectionString("PuzzleShopContext")));

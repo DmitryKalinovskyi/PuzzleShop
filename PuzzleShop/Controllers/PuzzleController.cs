@@ -1,4 +1,6 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using PuzzleShop.Dto;
 using PuzzleShop.Models;
 using PuzzleShop.Repository.Interfaces;
 
@@ -10,12 +12,15 @@ namespace PuzzleShop.Controllers
     {
         private readonly ILogger<PuzzleController> _logger;
         private readonly IPuzzleRepository _puzzleRepository;
+        private readonly IMapper _mapper;
 
         public PuzzleController(ILogger<PuzzleController> logger,
-            IPuzzleRepository puzzleRepository)
+            IPuzzleRepository puzzleRepository,
+            IMapper mapper)
         {
             _logger = logger;
             _puzzleRepository = puzzleRepository;
+            _mapper = mapper;
         }
 
         [HttpGet(Name = "GetRandomPuzzle")]
@@ -24,12 +29,12 @@ namespace PuzzleShop.Controllers
             _logger.LogInformation("Requested all puzzles");
 
             return Ok(
-                    _puzzleRepository.GetAll<Puzzle>()
+                _mapper.Map<List<PuzzleDto>>(_puzzleRepository.GetAll<Puzzle>())
                 );
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(200, Type = typeof(Puzzle))]
+        [ProducesResponseType(200, Type = typeof(PuzzleDto))]
         [ProducesResponseType(404)]
         public IActionResult GetPuzzle(int id)
         {
@@ -38,7 +43,7 @@ namespace PuzzleShop.Controllers
             if (puzzle == null)
                 return NotFound();
 
-            return Ok(puzzle);
+            return Ok(_mapper.Map<PuzzleDto>(puzzle));
         }
     }
 }
