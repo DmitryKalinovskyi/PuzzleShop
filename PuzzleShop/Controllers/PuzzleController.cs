@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PuzzleShop.Models;
+using PuzzleShop.Repository.Interfaces;
 
 namespace PuzzleShop.Controllers
 {
@@ -8,29 +9,36 @@ namespace PuzzleShop.Controllers
     public class PuzzleController : ControllerBase
     {
         private readonly ILogger<PuzzleController> _logger;
+        private readonly IPuzzleRepository _puzzleRepository;
 
-        public PuzzleController(ILogger<PuzzleController> logger)
+        public PuzzleController(ILogger<PuzzleController> logger,
+            IPuzzleRepository puzzleRepository)
         {
             _logger = logger;
+            _puzzleRepository = puzzleRepository;
         }
 
         [HttpGet(Name = "GetRandomPuzzle")]
-        public IEnumerable<Puzzle> Get()
+        public IActionResult GetAll()
         {
-            _logger.LogInformation("Requested info");
-            return Enumerable.Range(1, 5).Select(index => new Puzzle
-            {
-                Id = index,
-                Name = $"puzzle {index}",
-                Description = $"desc {index}",
-            })
-            .ToArray();
+            _logger.LogInformation("Requested all puzzles");
+
+            return Ok(
+                    _puzzleRepository.GetAll<Puzzle>()
+                );
         }
 
-        [HttpPost]
-        public void PostPuzzle(Puzzle puzzle)
+        [HttpGet("{id}")]
+        [ProducesResponseType(200, Type = typeof(Puzzle))]
+        [ProducesResponseType(404)]
+        public IActionResult GetPuzzle(int id)
         {
-            _logger.LogInformation(puzzle.Name);
+            Puzzle? puzzle = _puzzleRepository.GetById<Puzzle, int>(id);
+
+            if (puzzle == null)
+                return NotFound();
+
+            return Ok(puzzle);
         }
     }
 }
