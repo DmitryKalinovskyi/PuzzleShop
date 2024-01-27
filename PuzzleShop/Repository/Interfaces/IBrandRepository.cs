@@ -1,8 +1,8 @@
 ﻿using PuzzleShop.Models;
 
-namespace PuzzleShop.Repository
+namespace PuzzleShop.Repository.Interfaces
 {
-    public interface IBrandRepository
+    public interface IBrandRepository: IRepository
     {
         public ICollection<Puzzle> GetBrandPuzzles(int id);
     }

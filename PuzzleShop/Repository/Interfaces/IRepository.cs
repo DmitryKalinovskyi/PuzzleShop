@@ -1,4 +1,4 @@
-﻿namespace PuzzleShop.Repository
+﻿namespace PuzzleShop.Repository.Interfaces
 {
     
     public interface IRepository

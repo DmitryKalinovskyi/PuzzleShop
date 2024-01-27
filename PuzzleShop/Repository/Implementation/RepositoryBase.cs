@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PuzzleShop.Data;
 using PuzzleShop.Models;
+using PuzzleShop.Repository.Interfaces;
 
-namespace PuzzleShop.Repository
+namespace PuzzleShop.Repository.Implementation
 {
     public class RepositoryBase : IRepository
     {
