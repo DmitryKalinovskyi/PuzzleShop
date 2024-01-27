@@ -14,18 +14,23 @@ namespace PuzzleShop.Controllers
             _logger = logger;
         }
 
-
         [HttpGet(Name = "GetRandomPuzzle")]
         public IEnumerable<Puzzle> Get()
         {
             _logger.LogInformation("Requested info");
             return Enumerable.Range(1, 5).Select(index => new Puzzle
             {
-                Id=index,
-                Name=$"puzzle {index}",
-                Description=$"desc {index}",
+                Id = index,
+                Name = $"puzzle {index}",
+                Description = $"desc {index}",
             })
             .ToArray();
+        }
+
+        [HttpPost]
+        public void PostPuzzle(Puzzle puzzle)
+        {
+            _logger.LogInformation(puzzle.Name);
         }
     }
 }

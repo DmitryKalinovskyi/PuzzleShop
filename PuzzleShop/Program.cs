@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PuzzleShop.Data;
+using PuzzleShop.Repository.Implementation;
+using PuzzleShop.Repository.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +12,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Initialize db context
 builder.Services.AddDbContext<PuzzleShopContext>(
         options => options.UseSqlServer(builder.Configuration.GetConnectionString("PuzzleShopContext")));
+
+// Add repository services
+builder.Services.AddScoped<IPuzzleRepository, PuzzleRepository>();
+builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 
 var app = builder.Build();
 
