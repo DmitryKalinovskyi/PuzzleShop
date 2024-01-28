@@ -18,7 +18,7 @@ namespace PuzzleShop.Repository.Implementation
         /// Search function with pagination
         /// </summary>
         /// <param name="search"></param>
-        /// <param name="page">page value from 1 to infinity</param>
+        /// <param name="page">page value from 0 to infinity</param>
         /// <returns></returns>
         public ICollection<Puzzle> Search(string? search, int page = 0)
         {
