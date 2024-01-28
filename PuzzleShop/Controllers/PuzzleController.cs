@@ -24,21 +24,9 @@ namespace PuzzleShop.Controllers
             _mapper = mapper;
         }
 
-
-        // Just for testing purpose
-        //[HttpGet(Name = "GetRandomPuzzle")]
-        //public IActionResult GetAll()
-        //{
-        //    _logger.LogInformation("Requested all puzzles");
-
-        //    return Ok(
-        //        _mapper.Map<List<PuzzleDto>>(_puzzleRepository.GetAll<Puzzle>())
-        //        );
-        //}
-
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(List<PuzzleDto>))]
-        public IActionResult SearchAndSelect(string? search,  int? page)
+        public IActionResult SearchPuzzles(string? search, int? page)
         {
             return Ok(
                 _mapper.Map<List<PuzzleDto>>(
@@ -58,7 +46,5 @@ namespace PuzzleShop.Controllers
 
             return Ok(_mapper.Map<PuzzleDto>(puzzle));
         }
-
-
     }
 }
