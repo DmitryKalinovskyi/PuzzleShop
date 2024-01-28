@@ -24,7 +24,7 @@ namespace PuzzleShop.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("result")]
         [ProducesResponseType(200, Type = typeof(List<PuzzleDto>))]
         public IActionResult SearchPuzzles(string? search, int? page)
         {
@@ -34,12 +34,12 @@ namespace PuzzleShop.Controllers
                     ));
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{puzzleId}")]
         [ProducesResponseType(200, Type = typeof(PuzzleDto))]
         [ProducesResponseType(404)]
-        public IActionResult GetPuzzle(int id)
+        public IActionResult GetPuzzle(int puzzleId)
         {
-            Puzzle? puzzle = _puzzleRepository.GetById<Puzzle, int>(id);
+            Puzzle? puzzle = _puzzleRepository.GetById<Puzzle, int>(puzzleId);
 
             if (puzzle == null)
                 return NotFound();

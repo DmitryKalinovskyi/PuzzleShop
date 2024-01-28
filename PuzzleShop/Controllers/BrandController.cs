@@ -21,7 +21,7 @@ namespace PuzzleShop.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("result")]
         [ProducesResponseType(200, Type = typeof(List<BrandDto>))]
         public IActionResult SearchBrands(string? search, int? page)
         {
