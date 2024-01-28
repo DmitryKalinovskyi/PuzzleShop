@@ -4,6 +4,8 @@ namespace PuzzleShop.Repository.Interfaces
 {
     public interface IBrandRepository: IRepository
     {
-        public ICollection<Puzzle> GetBrandPuzzles(int id);
+        public ICollection<Brand> Search(string? search, int page);
+        
+        public ICollection<Puzzle> SearchBrandPuzzle(int brandId, string? search, int page);
     }
 }

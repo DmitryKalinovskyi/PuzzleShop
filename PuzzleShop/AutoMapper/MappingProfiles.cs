@@ -9,6 +9,9 @@ namespace PuzzleShop.AutoMapper
         public MappingProfiles()
         {
             CreateMap<Puzzle, PuzzleDto>();       
+            CreateMap<Brand, BrandDto>();
+            CreateMap<Category, CategoryDto>();
+            CreateMap<User, UserDto>();
         }
     }
 }
