@@ -59,7 +59,7 @@ This is example project of making API with ASP.NET Core.
         {
           "name": "name",
           "surname": "surname",
-          "adress": "new_user_password",
+          "adress": "adress",
         }
     </details>
 ## List of queries for managing your brand, requires authorization and to be a brand owner
