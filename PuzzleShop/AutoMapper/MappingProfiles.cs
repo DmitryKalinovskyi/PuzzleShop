@@ -12,6 +12,7 @@ namespace PuzzleShop.AutoMapper
             CreateMap<Brand, BrandDto>();
             CreateMap<Category, CategoryDto>();
             CreateMap<User, UserDto>();
+            CreateMap<User, UserPrivateDto>();
         }
     }
 }

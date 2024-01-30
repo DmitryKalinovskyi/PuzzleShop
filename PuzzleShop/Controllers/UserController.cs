@@ -37,5 +37,18 @@ namespace PuzzleShop.Controllers
 
             return Ok(_mapper.Map<UserDto>(user));
         }
+
+        [HttpGet("{userLogin}")]
+        [ProducesResponseType(200, Type = typeof(UserDto))]
+        [ProducesResponseType(404)]
+        public IActionResult GetUserByLogin(string userLogin)
+        {
+            User? user = _userRepository.GetUserByLogin(userLogin);
+
+            if (user == null)
+                return NotFound();
+
+            return Ok(_mapper.Map<UserDto>(user));
+        }
     }
 }
