@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace PuzzleShop.Models
 {
     [Index(nameof(Email), IsUnique = true)]
+    [Index(nameof(Login), IsUnique = true)]
     public class User
     {
         [Key]
@@ -19,6 +20,10 @@ namespace PuzzleShop.Models
         [StringLength(320)]
         [NotNull]
         public string Email { get; set; }
+
+        [StringLength(50, MinimumLength = 3)]
+        [NotNull]
+        public string? Login { get; set; }
 
         [NotNull]
         public string PasswordHash { get; set; }
