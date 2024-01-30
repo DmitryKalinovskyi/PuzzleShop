@@ -11,6 +11,8 @@ namespace PuzzleShop.Dto
 
         public string? Surname { get; set; }
 
-        public bool IsAdmin { get; set; }
+        public string? Login { get; set; }
+
+        DateTime CreatedTime { get; set; }
     }
 }
