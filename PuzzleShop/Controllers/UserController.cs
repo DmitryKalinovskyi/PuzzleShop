@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using PuzzleShop.Dto;
@@ -25,7 +26,7 @@ namespace PuzzleShop.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{userId}")]
+        [HttpGet("id/{userId}")]
         [ProducesResponseType(200, Type = typeof(UserDto))]
         [ProducesResponseType(404)]
         public IActionResult GetUser(int userId)
@@ -38,20 +39,24 @@ namespace PuzzleShop.Controllers
             return Ok(_mapper.Map<UserDto>(user));
         }
 
-        [HttpGet("{userId}/private")]
+        [HttpGet("id/{userId}/private")]
         [ProducesResponseType(200, Type = typeof(UserPrivateDto))]
         [ProducesResponseType(404)]
-        public IActionResult GetUserPrivate(int userId)
+        [ProducesResponseType(401)]
+        [Authorize]
+        public IActionResult GetUserPrivate(int userId, string? email, string? password)
         {
-            User? user = _userRepository.GetById<User, int>(userId);
 
-            if (user == null)
-                return NotFound();
+            return BadRequest();
+            //User? user = _userRepository.GetById<User, int>(userId);
 
-            return Ok(_mapper.Map<UserPrivateDto>(user));
+            //if (user == null)
+            //    return NotFound();
+
+            //return Ok(_mapper.Map<UserPrivateDto>(user));
         }
 
-        [HttpGet("{userLogin}")]
+        [HttpGet("login/{userLogin}")]
         [ProducesResponseType(200, Type = typeof(UserDto))]
         [ProducesResponseType(404)]
         public IActionResult GetUserByLogin(string userLogin)
@@ -64,17 +69,21 @@ namespace PuzzleShop.Controllers
             return Ok(_mapper.Map<UserDto>(user));
         }
 
-        [HttpGet("{userLogin}/private")]
+        [HttpGet("login/{userLogin}/private")]
         [ProducesResponseType(200, Type = typeof(UserPrivateDto))]
         [ProducesResponseType(404)]
+        [ProducesResponseType(401)]
+        [Authorize]
         public IActionResult GetUserByLoginPrivate(string userLogin)
         {
-            User? user = _userRepository.GetUserByLogin(userLogin);
+            return BadRequest();
 
-            if (user == null)
-                return NotFound();
+            //User? user = _userRepository.GetUserByLogin(userLogin);
 
-            return Ok(_mapper.Map<UserPrivateDto>(user));
+            //if (user == null)
+            //    return NotFound();
+
+            //return Ok(_mapper.Map<UserPrivateDto>(user));
         }
     }
 }
