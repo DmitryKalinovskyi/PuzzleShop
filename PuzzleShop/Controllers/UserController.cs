@@ -38,6 +38,19 @@ namespace PuzzleShop.Controllers
             return Ok(_mapper.Map<UserDto>(user));
         }
 
+        [HttpGet("{userId}/private")]
+        [ProducesResponseType(200, Type = typeof(UserPrivateDto))]
+        [ProducesResponseType(404)]
+        public IActionResult GetUserPrivate(int userId)
+        {
+            User? user = _userRepository.GetById<User, int>(userId);
+
+            if (user == null)
+                return NotFound();
+
+            return Ok(_mapper.Map<UserPrivateDto>(user));
+        }
+
         [HttpGet("{userLogin}")]
         [ProducesResponseType(200, Type = typeof(UserDto))]
         [ProducesResponseType(404)]
@@ -49,6 +62,19 @@ namespace PuzzleShop.Controllers
                 return NotFound();
 
             return Ok(_mapper.Map<UserDto>(user));
+        }
+
+        [HttpGet("{userLogin}/private")]
+        [ProducesResponseType(200, Type = typeof(UserPrivateDto))]
+        [ProducesResponseType(404)]
+        public IActionResult GetUserByLoginPrivate(string userLogin)
+        {
+            User? user = _userRepository.GetUserByLogin(userLogin);
+
+            if (user == null)
+                return NotFound();
+
+            return Ok(_mapper.Map<UserPrivateDto>(user));
         }
     }
 }
