@@ -18,25 +18,23 @@ builder.Services.AddSwaggerGen();
 // Add automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-// Initialize db context
-builder.Services.AddDbContext<PuzzleShopContext>(
-        options => options.UseSqlServer(builder.Configuration.GetConnectionString("PuzzleShopContext")));
-
-// Identity framework setup
-//builder.Services.AddIdentity<User, IdentityRole>()
-//    .AddEntityFrameworkStores<PuzzleShopContext>();
-//builder.Services.AddMemoryCache();
-//builder.Services.AddSession();
-//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-//    .AddCookie();
-
-
 // Add repository services
 builder.Services.AddScoped<IPuzzleRepository, PuzzleRepository>();
 builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+// Initialize db context
+builder.Services.AddDbContext<PuzzleShopContext>(
+        options => options.UseSqlServer(builder.Configuration.GetConnectionString("PuzzleShopContext")));
+
+// Identity framework setup
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<PuzzleShopContext>();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie();
 
 var app = builder.Build();
 
@@ -49,7 +47,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseSession();
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
 
