@@ -4,9 +4,9 @@ This is example project of making API with ASP.NET Core.
 # API interaction
 
 >[!TIP]
->:heavy_check_mark: - provided query is free to use
->:warning: - query in developement and not fully tested
->:x: - query is not implemented or don't work properly
+>✔️ - provided query is free to use
+>⚠️ - query in developement and not fully tested
+>❌ - query is not implemented or don't work properly
 
 ## List of queries for unauthorized access
 
@@ -17,9 +17,9 @@ This is example project of making API with ASP.NET Core.
 - ⚠️ GET ```/Brand/{brandId}/owned?search&page``` - return puzzles by search parameters that owned by brand with given ```brandId```
 
 ## User information
-- :x: GET `/User/{userId}` - return public information about user by `userId`
-- :x: GET `/User/{userLogin}` - return public information about user by `userLogin`
-- :x: GET `/User/{userId}/private` - return private information about user by `userId`, can be managed by account owner, used to making orders
+- ❌ GET `/User/{userId}` - return public information about user by `userId`
+- ❌ GET `/User/{userLogin}` - return public information about user by `userLogin`
+- ❌ GET `/User/{userId}/private` - return private information about user by `userId`, can be managed by account owner, used to making orders
     <details>
       <summary> request body
       </summary>
@@ -30,7 +30,7 @@ This is example project of making API with ASP.NET Core.
           "password": "user_password"
         }
     </details>
-- :x: GET `/User/{userLogin}/private` - return private information about user by `userLogin`, can be managed by account owner, used to making orders
+- ❌ GET `/User/{userLogin}/private` - return private information about user by `userLogin`, can be managed by account owner, used to making orders
     <details>
       <summary> request body
       </summary>
@@ -42,7 +42,7 @@ This is example project of making API with ASP.NET Core.
         }
     </details>
 ## Sign up, managing your account 
-- :x: POST `/User/create` - create account providing email and password
+- ❌ POST `/User/create` - create account providing email and password
     <details>
       <summary> request body
       </summary>
@@ -57,7 +57,7 @@ This is example project of making API with ASP.NET Core.
         }
     </details>
 
-- :x: POST `/User/{userId}/update_password` - update account password providing email, old and new password
+- ❌ POST `/User/{userId}/update_password` - update account password providing email, old and new password
     <details>
       <summary> request body
       </summary>
@@ -69,7 +69,7 @@ This is example project of making API with ASP.NET Core.
           "new-password": "new_user_password",
         }
     </details>
-- :x: POST `/User/{userId}/update` - update account password providing email, old and new password
+- ❌ POST `/User/{userId}/update` - update account password providing email, old and new password
     <details>
       <summary> request body
       </summary>
@@ -80,7 +80,7 @@ This is example project of making API with ASP.NET Core.
           "password": "user_password",
           "name": "name",
           "surname": "surname",
-          "adress": "adress",
+          "address": "address",
         }
     </details>
 ## List of queries for managing your brand, requires authorization and to be a brand owner
