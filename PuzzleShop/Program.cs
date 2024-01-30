@@ -2,6 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using PuzzleShop.Data;
 using PuzzleShop.Repository.Implementation;
 using PuzzleShop.Repository.Interfaces;
+using PuzzleShop.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +21,15 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Initialize db context
 builder.Services.AddDbContext<PuzzleShopContext>(
         options => options.UseSqlServer(builder.Configuration.GetConnectionString("PuzzleShopContext")));
+
+// Identity framework setup
+//builder.Services.AddIdentity<User, IdentityRole>()
+//    .AddEntityFrameworkStores<PuzzleShopContext>();
+//builder.Services.AddMemoryCache();
+//builder.Services.AddSession();
+//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+//    .AddCookie();
+
 
 // Add repository services
 builder.Services.AddScoped<IPuzzleRepository, PuzzleRepository>();

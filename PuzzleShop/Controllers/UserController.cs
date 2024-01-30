@@ -61,7 +61,7 @@ namespace PuzzleShop.Controllers
         [ProducesResponseType(404)]
         public IActionResult GetUserByLogin(string userLogin)
         {
-            User? user = _userRepository.GetUserByLogin(userLogin);
+            User? user = _userRepository.GetByUserName(userLogin);
 
             if (user == null)
                 return NotFound();
