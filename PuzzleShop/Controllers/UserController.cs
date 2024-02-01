@@ -179,6 +179,13 @@ namespace PuzzleShop.Controllers
             string password
             )
         {
+            // validate email and login
+            if (_userRepository.GetUserByEmail(email) != null)
+                return BadRequest("Someone already uses this email.");
+
+            if(_userRepository.GetUserByLogin(login) != null)
+                return BadRequest("Someone already uses this login.");
+
             User? user = new User()
             {
                 Name = name,
