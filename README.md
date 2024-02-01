@@ -17,9 +17,9 @@ This is example project of making API with ASP.NET Core.
 - ⚠️ GET ```/Brand/{brandId}/owned?search&page``` - return puzzles by search parameters that owned by brand with given ```brandId```
 
 ## User information
-- ❌ GET `/User/{userId}` - return public information about user by `userId`
-- ❌ GET `/User/{userLogin}` - return public information about user by `userLogin`
-- ❌ GET `/User/{userId}/private` - return private information about user by `userId`, can be managed by account owner, used to making orders
+- ⚠️ GET `/User/{userId}` - return public information about user by `userId`
+- ⚠️ GET `/User/{userLogin}` - return public information about user by `userLogin`
+- ⚠️ GET `/User/{userId}/private` - return private information about user by `userId`, can be managed by account owner, used to making orders
     <details>
       <summary> request body
       </summary>
@@ -30,7 +30,7 @@ This is example project of making API with ASP.NET Core.
           "password": "user_password"
         }
     </details>
-- ❌ GET `/User/{userLogin}/private` - return private information about user by `userLogin`, can be managed by account owner, used to making orders
+- ⚠️ GET `/User/{userLogin}/private` - return private information about user by `userLogin`, can be managed by account owner, used to making orders
     <details>
       <summary> request body
       </summary>
@@ -57,7 +57,7 @@ This is example project of making API with ASP.NET Core.
         }
     </details>
 
-- ❌ POST `/User/{userId}/update_password` - update account password providing email, old and new password
+- ⚠️ POST `/User/{userId}/update_password` - update account password providing email, old and new password
     <details>
       <summary> request body
       </summary>
@@ -69,7 +69,7 @@ This is example project of making API with ASP.NET Core.
           "new-password": "new_user_password",
         }
     </details>
-- ❌ POST `/User/{userId}/update` - update account password providing email, old and new password
+- ⚠️ POST `/User/{userId}/update` - update account password providing email, old and new password
     <details>
       <summary> request body
       </summary>
