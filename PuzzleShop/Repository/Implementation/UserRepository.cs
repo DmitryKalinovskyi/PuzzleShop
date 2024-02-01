@@ -11,6 +11,11 @@ namespace PuzzleShop.Repository.Implementation
     {
         public UserRepository(PuzzleShopContext context) : base(context) { }
 
+        public User? GetUserByEmail(string email)
+        {
+            return _context.Users.Where(entity => entity.Email == email).FirstOrDefault();
+        }
+
         public User? GetUserByLogin(string login)
         {
             return _context.Users.Where(entity => entity.Login == login).FirstOrDefault();

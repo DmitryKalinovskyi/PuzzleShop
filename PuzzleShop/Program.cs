@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using PuzzleShop.Data;
 using PuzzleShop.Repository.Implementation;
@@ -25,6 +26,7 @@ builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 var app = builder.Build();
 

@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using PuzzleShop.Dto;
 using PuzzleShop.Models;
 using PuzzleShop.Repository.Implementation;
 using PuzzleShop.Repository.Interfaces;
+using PuzzleShop.Services;
 
 namespace PuzzleShop.Controllers
 {
@@ -16,14 +16,17 @@ namespace PuzzleShop.Controllers
         private readonly ILogger<UserController> _logger;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly IAuthenticationService _authenticationService;
 
         public UserController(ILogger<UserController> logger,
             IUserRepository userRepository,
-            IMapper mapper)
+            IMapper mapper,
+            IAuthenticationService authenticationService)
         {
             _logger = logger;
             _userRepository = userRepository;
             _mapper = mapper;
+            _authenticationService = authenticationService;
         }
 
         [HttpGet("id/{userId}")]
@@ -43,17 +46,20 @@ namespace PuzzleShop.Controllers
         [ProducesResponseType(200, Type = typeof(UserPrivateDto))]
         [ProducesResponseType(404)]
         [ProducesResponseType(401)]
-        [Authorize]
-        public IActionResult GetUserPrivate(int userId, string? email, string? password)
+        public IActionResult GetUserPrivate(int userId, string email, string password)
         {
+            if (_userRepository.GetById<User, int>(userId) == null)
+                return NotFound();
 
-            return BadRequest();
-            //User? user = _userRepository.GetById<User, int>(userId);
+            User? user = _authenticationService.Login(email, password);
+            
+            if (user == null)
+                return Unauthorized();
 
-            //if (user == null)
-            //    return NotFound();
+            if (user.IsAdmin == false && user.Id != userId)
+                return Unauthorized();
 
-            //return Ok(_mapper.Map<UserPrivateDto>(user));
+            return Ok(_mapper.Map<UserPrivateDto>(user));
         }
 
         [HttpGet("login/{userLogin}")]
@@ -73,17 +79,20 @@ namespace PuzzleShop.Controllers
         [ProducesResponseType(200, Type = typeof(UserPrivateDto))]
         [ProducesResponseType(404)]
         [ProducesResponseType(401)]
-        [Authorize]
-        public IActionResult GetUserByLoginPrivate(string userLogin)
+        public IActionResult GetUserByLoginPrivate(string userLogin, string email, string password)
         {
-            return BadRequest();
+            if (_userRepository.GetUserByLogin(userLogin) == null)
+                return NotFound();
 
-            //User? user = _userRepository.GetUserByLogin(userLogin);
+            User? user = _authenticationService.Login(email, password);
 
-            //if (user == null)
-            //    return NotFound();
+            if (user == null)
+                return Unauthorized();
 
-            //return Ok(_mapper.Map<UserPrivateDto>(user));
+            if (user.IsAdmin == false && user.Login != userLogin)
+                return Unauthorized();
+
+            return Ok(_mapper.Map<UserPrivateDto>(user));
         }
     }
 }
