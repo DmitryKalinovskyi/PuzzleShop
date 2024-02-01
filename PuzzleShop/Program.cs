@@ -1,8 +1,9 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using PuzzleShop.Data;
 using PuzzleShop.Repository.Implementation;
 using PuzzleShop.Repository.Interfaces;
+using PuzzleShop.Services;
+using PuzzleShop.Services.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 

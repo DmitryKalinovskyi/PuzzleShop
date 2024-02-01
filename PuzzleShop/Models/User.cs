@@ -28,10 +28,10 @@ namespace PuzzleShop.Models
         [NotNull]
         public string PasswordHash { get; set; }
 
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
-        DateTime CreatedTime { get; set; }
+        public DateTime CreatedTime { get; set; }
 
-        public bool IsAdmin { get; set; }
+        public bool IsAdmin { get; set; } = false;
     }
 }

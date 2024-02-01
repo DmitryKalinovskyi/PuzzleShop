@@ -48,18 +48,20 @@ namespace PuzzleShop.Controllers
         [ProducesResponseType(401)]
         public IActionResult GetUserPrivate(int userId, string email, string password)
         {
-            if (_userRepository.GetById<User, int>(userId) == null)
-                return NotFound();
+            User? user1 = _userRepository.GetById<User, int>(userId);
+            if (user1 == null)
+                return NotFound("User with given **userId** not founded!");
 
-            User? user = _authenticationService.Login(email, password);
-            
-            if (user == null)
+            User? user2 = _authenticationService.Login(email, password);
+
+            if (user2 == null)
+                return Unauthorized("Invalid login information");
+
+            // user1 and user2 should be the same or user2 is admin
+            if (user2.IsAdmin == false && user1.Id != user2.Id)
                 return Unauthorized();
 
-            if (user.IsAdmin == false && user.Id != userId)
-                return Unauthorized();
-
-            return Ok(_mapper.Map<UserPrivateDto>(user));
+            return Ok(_mapper.Map<UserPrivateDto>(user1));
         }
 
         [HttpGet("login/{userLogin}")]
@@ -81,18 +83,118 @@ namespace PuzzleShop.Controllers
         [ProducesResponseType(401)]
         public IActionResult GetUserByLoginPrivate(string userLogin, string email, string password)
         {
-            if (_userRepository.GetUserByLogin(userLogin) == null)
-                return NotFound();
+            User? user1 = _userRepository.GetUserByLogin(userLogin);
+            if (user1 == null)
+                return NotFound("User with given **userId** not founded!");
 
-            User? user = _authenticationService.Login(email, password);
+            User? user2 = _authenticationService.Login(email, password);
 
-            if (user == null)
+            if (user2 == null)
+                return Unauthorized("Invalid login information");
+
+            // user1 and user2 should be the same or user2 is admin
+            if (user2.IsAdmin == false && user1.Id != user2.Id)
                 return Unauthorized();
 
-            if (user.IsAdmin == false && user.Login != userLogin)
-                return Unauthorized();
-
-            return Ok(_mapper.Map<UserPrivateDto>(user));
+            return Ok(_mapper.Map<UserPrivateDto>(user1));
         }
+
+        [HttpPost("id/{userId}/update_password")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(401)]
+        public IActionResult UpdateUserPassword(int userId, string new_password,
+            string email,
+            string password
+            )
+        {
+            User? user1 = _userRepository.GetById<User, int>(userId);
+            if (user1 == null)
+                return NotFound("User with given **userId** not founded!");
+
+            User? user2 = _authenticationService.Login(email, password);
+
+            if (user2 == null)
+                return Unauthorized("Invalid login information");
+
+            // user1 and user2 should be the same or user2 is admin
+            if (user2.IsAdmin == false && user1.Id != user2.Id)
+                return Unauthorized();
+
+            _authenticationService.UpdatePassword(user1, new_password);
+
+            _userRepository.Save();
+
+            return Ok();
+        }
+
+        [HttpPost("id/{userId}/update")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(401)]
+        public IActionResult UpdateUserInfo(int userId,
+            string name,
+            string surname,
+            string login,
+            string address,
+
+            string email,
+            string password
+            )
+        {
+            User? user1 = _userRepository.GetById<User, int>(userId);
+            if (user1 == null)
+                return NotFound("User with given **userId** not founded!");
+
+            User? user2 = _authenticationService.Login(email, password);
+
+            if (user2 == null)
+                return Unauthorized("Invalid login information");
+
+            // user1 and user2 should be the same or user2 is admin
+            if (user2.IsAdmin == false && user1.Id != user2.Id)
+                return Unauthorized();
+
+            // update user data
+            user1.Name = name;
+            user1.Surname = surname;
+            user1.Login = login;
+            user1.Address = address;
+
+            _userRepository.Save();
+
+            return Ok();
+        }
+
+        [HttpPost("register")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(401)]
+        public IActionResult CreateUser(
+            string name,
+            string surname,
+            string login,
+
+            string email,
+            string password
+            )
+        {
+            User? user = new User()
+            {
+                Name = name,
+                Surname = surname,
+                Login = login,
+                CreatedTime = DateTime.UtcNow,
+                Email = email
+            };
+
+            _authenticationService.Register(user, password);
+
+            _userRepository.Insert(user);
+
+            _userRepository.Save();
+            return Ok();
+        }
+
     }
 }

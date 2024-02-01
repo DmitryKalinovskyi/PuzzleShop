@@ -1,5 +1,8 @@
 ﻿using PuzzleShop.Models;
 using PuzzleShop.Repository.Interfaces;
+using System.Collections;
+using System.Diagnostics;
+using System.Runtime.Intrinsics.Arm;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -18,26 +21,31 @@ namespace PuzzleShop.Services.Implementation
 
         public string GeneratePasswordHash(string password)
         {
+            return password;
+
+            // code below don't work properly for some unknow reason
+
             byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
 
-            byte[] hashedPassword = SHA256.HashData(passwordBytes);
+            using (SHA256 sha256 = SHA256.Create())
+            {
 
-            // Encrypt the hashed password using RSA
-            byte[] encryptedPassword = _rsa.Encrypt(hashedPassword, false);
+                byte[] hashedPassword = sha256.ComputeHash(passwordBytes);
 
-            // Convert the encrypted password to a Base64 string
-            string passwordHash = Convert.ToBase64String(encryptedPassword);
+                // Encrypt the hashed password using RSA
+                byte[] encryptedPassword = _rsa.Encrypt(hashedPassword, false);
 
-            return passwordHash;
+
+                // Convert the encrypted password to a Base64 string
+                string passwordHash = Convert.ToBase64String(encryptedPassword);
+
+                return passwordHash;
+            }
         }
 
 
-        public User? Login(string email, string password)
+        public User? Login(User user, string password)
         {
-            User? user = _userRepository.GetUserByEmail(email);
-
-            if (user == null) return null;
-
             string hashed = GeneratePasswordHash(password);
 
             return user.PasswordHash == hashed? user: null;
@@ -48,6 +56,22 @@ namespace PuzzleShop.Services.Implementation
             user.PasswordHash = GeneratePasswordHash(password);
 
             return user;
+        }
+
+        public bool UpdatePassword(User user, string newPassword)
+        {
+            user.PasswordHash = GeneratePasswordHash(newPassword);
+
+            return true;
+        }
+
+        public User? Login(string email, string password)
+        {
+            User? user = _userRepository.GetUserByEmail(email);
+
+            if (user == null) return null;
+
+            return Login(user, password);
         }
     }
 }
