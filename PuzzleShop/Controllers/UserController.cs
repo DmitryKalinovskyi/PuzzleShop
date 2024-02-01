@@ -183,7 +183,7 @@ namespace PuzzleShop.Controllers
             if (_userRepository.GetUserByEmail(email) != null)
                 return BadRequest("Someone already uses this email.");
 
-            if(_userRepository.GetUserByLogin(login) != null)
+            if (_userRepository.GetUserByLogin(login) != null)
                 return BadRequest("Someone already uses this login.");
 
             User? user = new User()
@@ -202,6 +202,34 @@ namespace PuzzleShop.Controllers
             _userRepository.Save();
             return Ok();
         }
+
+        [HttpDelete("{userId}/delete")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(401)]
+        public IActionResult DeleteUser(
+            int userId,
+            string email,
+            string password
+            )
+        {
+            User? targetUser = _userRepository.GetById<User, int>(userId);
+
+            if(targetUser == null) 
+                return NotFound();
+
+            User? user = _authenticationService.Login(email, password);
+            if (user == null)
+                return Unauthorized();
+
+            if (user.IsAdmin == false && user.Id != targetUser.Id)
+                return Unauthorized();
+
+            _userRepository.Delete(targetUser);
+            _userRepository.Save();
+            return Ok();
+        }
+
 
     }
 }
