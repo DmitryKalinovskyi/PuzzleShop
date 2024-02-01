@@ -5,7 +5,7 @@ This is example project of making API with ASP.NET Core.
 
 >[!TIP]
 >✔️ - provided query is free to use
->⚠️ - query in developement and not fully tested
+>⚠️ - query in developement or not fully tested
 >❌ - query is not implemented or don't work properly
 
 ## List of queries for unauthorized access
@@ -42,7 +42,7 @@ This is example project of making API with ASP.NET Core.
         }
     </details>
 ## Sign up, managing your account 
-- ❌ POST `/User/create` - create account providing email and password
+- ⚠️ POST `/User/create` - create account providing email and password
     <details>
       <summary> request body
       </summary>
@@ -81,6 +81,17 @@ This is example project of making API with ASP.NET Core.
           "name": "name",
           "surname": "surname",
           "address": "address",
+        }
+    </details>
+- ⚠️ DELETE `/User/{userId}/delete` - deleting account from database
+    <details>
+      <summary> request body
+      </summary>
+    
+        Content-Type: application/json
+        {
+          "email": "email",
+          "password": "user_password",
         }
     </details>
 ## List of queries for managing your brand, requires authorization and to be a brand owner
