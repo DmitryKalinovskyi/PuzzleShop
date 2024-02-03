@@ -26,20 +26,16 @@ namespace PuzzleShop.Repository.Implementation
 
             search = search?.Trim() ?? string.Empty;
 
-            if (search == null || search == "")
+            var query = _context.Puzzles.AsQueryable();
+            if (!string.IsNullOrEmpty(search))
             {
-                return _context.Puzzles
+                query.Where(entity => entity.Name.Contains(search));
+            }
+
+            return query
                     .Skip(page * PAGE_SIZE)
                     .Take(PAGE_SIZE)
                     .ToList();
-            }
-
-            // filter
-            return _context.Puzzles
-                .Where(entity => entity.Name.Contains(search))
-                .Skip(page * PAGE_SIZE)
-                .Take(PAGE_SIZE)
-                .ToList();
         }
     }
 }

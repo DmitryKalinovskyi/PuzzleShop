@@ -14,24 +14,27 @@ namespace PuzzleShop.Repository.Implementation
 
         public const int PAGE_SIZE = 12;
 
-        public ICollection<Brand> Search(string? search, int page = 0)
+        public ICollection<Brand> Search(string? search, int page = 0, bool onlyConfirmed = true)
         {
             if (page < 0) throw new ArgumentOutOfRangeException(nameof(page));
 
             // trim spaces
             search = search?.Trim() ?? string.Empty;
 
-            if (search == "")
+            var query = _context.Brands.AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
             {
-                return _context.Brands
-                    .Skip(page * PAGE_SIZE)
-                    .Take(PAGE_SIZE)
-                    .ToList();
+                query = query.Where(entity => entity.Name.Contains(search));
+            }
+
+            if(onlyConfirmed)
+            {
+                query = query.Where(entity => entity.IsConfirmed);
             }
 
             // filter
-            return _context.Brands
-                .Where(entity => entity.Name.Contains(search))
+            return query
                 .Skip(page * PAGE_SIZE)
                 .Take(PAGE_SIZE)
                 .ToList();
@@ -39,24 +42,30 @@ namespace PuzzleShop.Repository.Implementation
 
         public ICollection<Puzzle> SearchBrandPuzzle(int brandId, string? search, int page = 0)
         {
+            if (page < 0) throw new ArgumentOutOfRangeException(nameof(page));
+
             // trim spaces
             search = search?.Trim() ?? string.Empty;
 
-            if (search == "")
+            var query = _context.Puzzles.Where(entity => entity.BrandId == brandId);
+
+
+            if (!string.IsNullOrEmpty(search))
             {
-                return _context.Puzzles
-                    .Where(entity => entity.BrandId == brandId)
-                    .Skip(page * PAGE_SIZE)
-                    .Take(PAGE_SIZE)
-                    .ToList();
+                query = query.Where(entity => entity.Name.Contains(search));
             }
 
-            // filter
-            return _context.Puzzles
-                .Where(entity => entity.Name.Contains(search) && entity.BrandId == brandId)
+            return query
                 .Skip(page * PAGE_SIZE)
                 .Take(PAGE_SIZE)
                 .ToList();
+        }
+
+        public Brand? GetBrandByName(string name)
+        {
+            return _context.Brands
+                .Where(entity => entity.Name == name)
+                .FirstOrDefault();
         }
     }
 }
