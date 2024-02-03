@@ -30,5 +30,7 @@ namespace PuzzleShop.Dto
         public int Amount { get; set; }
 
         public int BrandId { get; set; }
+
+        public int? CategoryId { get; set; }
     }
 }

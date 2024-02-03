@@ -65,6 +65,7 @@ namespace PuzzleShop.Controllers
             double price,
             int amount,
             int brand_id,
+            int? category_id,
 
             string email,
             string password
@@ -89,6 +90,7 @@ namespace PuzzleShop.Controllers
                 Price=price,
                 Amount=amount,
                 BrandId=brand_id,
+                CategoryId=category_id,
             };
 
             _puzzleRepository.Insert(puzzle);
@@ -108,6 +110,7 @@ namespace PuzzleShop.Controllers
             double price,
             int amount,
             int brand_id,
+            int? category_id,
 
             string email,
             string password
@@ -144,6 +147,7 @@ namespace PuzzleShop.Controllers
             puzzle.Price = price;
             puzzle.Amount = amount;
             puzzle.BrandId = brand_id;
+            puzzle.CategoryId = category_id;
 
             _puzzleRepository.Save();
 

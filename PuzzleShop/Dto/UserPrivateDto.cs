@@ -7,6 +7,5 @@
         public string Address { get; set; }
 
         public bool IsAdmin { get; set; }
-
     }
 }

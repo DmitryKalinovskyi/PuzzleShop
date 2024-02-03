@@ -31,9 +31,12 @@ namespace PuzzleShop.Models
         public int Amount { get; set; }
 
         public int BrandId { get; set; }
+        
+        public int? CategoryId { get; set; }
         // Reference navigation properties
 
-        [NotNull]
         public Brand Brand { get; set; }
+        
+        public Category? Category { get; set; }
     }
 }
