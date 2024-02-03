@@ -95,4 +95,67 @@ This is example project of making API with ASP.NET Core.
           "password": "user_password"
         }
     </details>
+## List of queries for managing your puzzles
+- ❌  POST `/Puzzle/create` - create puzzle providing email and password
+    <details>
+      <summary> request body
+      </summary>
+    
+        Content-Type: application/json
+        {
+          "name": "name",
+          "description": "description",
+          "image_url": "image_url",
+          "price": "price",
+          "amount": "amount",
+          "brand_id": "brand_id"
+          "email": "email",
+          "password": "user_password"
+        }
+    </details>
+
+- ❌  POST `/Puzzle/{puzzleId}/update` - update puzzle providing email and password
+    <details>
+      <summary> request body
+      </summary>
+    
+        Content-Type: application/json
+        {
+          "name": "name",
+          "description": "description",
+          "image_url": "image_url",
+          "price": "price",
+          "amount": "amount",
+          "brand_id": "brand_id"
+          "email": "email",
+          "password": "user_password"
+        }
+    </details>
+    
 ## List of queries for managing your brand, requires authorization and to be a brand owner
+- ❌  POST `/Brand/create` - create brand providing email and password
+    <details>
+      <summary> request body
+      </summary>
+    
+        Content-Type: application/json
+        {
+          "name": "name",
+          "description": "description",
+          "email": "email",
+          "password": "user_password"
+        }
+    </details>
+- ❌ POST `/Brand/{brandId}/update` - update brand providing email and password
+    <details>
+      <summary> request body
+      </summary>
+    
+        Content-Type: application/json
+        {
+          "name": "name",
+          "description": "description",
+          "email": "email",
+          "password": "user_password"
+        }
+    </details>
