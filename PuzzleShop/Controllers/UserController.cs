@@ -9,8 +9,8 @@ using PuzzleShop.Services;
 
 namespace PuzzleShop.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("[controller]")]
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;

@@ -3,17 +3,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PuzzleShop.Models
 {
-    //[Flags]
     public enum OrderStatus
     {
         Created = 1,
-        InDeliver = 2,
-        Delivered = 3, 
+        InDeliver,
+        Delivered, 
 
         // just store in the history
-        Tooken = 4, 
-        Canceled = 5, // client decided to break the order
-        Failed = 6 // failed due to accident
+        Tooken, 
+        Canceled, // client decided to break the order
+        Failed // failed due to accident
     }
 
     [Index(nameof(OrderStatus), IsUnique = false)]
@@ -24,7 +23,6 @@ namespace PuzzleShop.Models
 
         public DateTime CreatedTime { get; set; }
 
-
         /// <summary>
         /// This field are indexed, to speed up work with orders
         /// </summary>
@@ -32,5 +30,7 @@ namespace PuzzleShop.Models
 
         [Precision(2)]
         public double TotalPrice { get; set; }
+
+        public string DestinationPlace { get; set; }
     }
 }

@@ -15,6 +15,8 @@ namespace PuzzleShop.Models
         [Precision(2)]
         public double FixedPrice { get; set; }
 
+        public int Amount { get; set; }
+
         // reference navigation
 
         public Order Order { get; set; }
