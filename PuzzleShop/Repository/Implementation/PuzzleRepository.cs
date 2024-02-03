@@ -22,8 +22,9 @@ namespace PuzzleShop.Repository.Implementation
         /// <returns></returns>
         public ICollection<Puzzle> Search(string? search, int page = 0)
         {
-            // first page values from 0..PAGE_SIZE-1
-            // second page values from PAGE_SIZE..2*PAGE_SIZE-1
+            if(page < 0) throw new ArgumentOutOfRangeException(nameof(page));
+
+            search = search?.Trim() ?? string.Empty;
 
             if (search == null || search == "")
             {

@@ -16,6 +16,8 @@ namespace PuzzleShop.Repository.Implementation
 
         public ICollection<Brand> Search(string? search, int page = 0)
         {
+            if (page < 0) throw new ArgumentOutOfRangeException(nameof(page));
+
             // trim spaces
             search = search?.Trim() ?? string.Empty;
 
