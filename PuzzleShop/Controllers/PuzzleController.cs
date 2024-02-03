@@ -78,7 +78,7 @@ namespace PuzzleShop.Controllers
             if (brand == null)
                 return NotFound("Specified brand is not found");
 
-            if (brand.OwnerId != user.Id)
+            if (!user.IsAdmin && brand.OwnerId != user.Id)
                 return Unauthorized("You don't have access to publish this puzzle by this brand name");
 
             var puzzle = new Puzzle()
@@ -132,10 +132,10 @@ namespace PuzzleShop.Controllers
                 return NotFound("Newly specified brand is not founded");
 
             // check access
-            if (brandFrom.OwnerId != user.Id)
+            if (!user.IsAdmin && brandFrom.OwnerId != user.Id)
                 return Unauthorized("You don't have right to manage this puzzle.");
 
-            if (brandTo.OwnerId != user.Id)
+            if (!user.IsAdmin && brandTo.OwnerId != user.Id)
                 return Unauthorized("You don't have right to push this puzzle into another brand.");
 
             puzzle.Name = name;
@@ -145,6 +145,37 @@ namespace PuzzleShop.Controllers
             puzzle.Amount = amount;
             puzzle.BrandId = brand_id;
 
+            _puzzleRepository.Save();
+
+            return Ok();
+        }
+
+        [HttpDelete("{puzzleId}/delete")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(404)]
+        public IActionResult DeletePuzzle(
+            int puzzleId,
+
+            string email,
+            string password
+            )
+        {
+            var user = _auth.Login(email, password);
+            if (user == null)
+                return Unauthorized("Login information is invalid.");
+
+            var puzzle = _puzzleRepository.GetById<Puzzle, int>(puzzleId);
+
+            if (puzzle == null)
+                return NotFound("Such puzzle not founded.");
+
+            var brand = _brandRepository.GetById<Brand, int>(puzzle.BrandId);
+
+            if(!user.IsAdmin && brand.OwnerId != user.Id)
+                return Unauthorized("You don't have access to perform operation.");
+
+            _puzzleRepository.Delete(puzzle);
             _puzzleRepository.Save();
 
             return Ok();

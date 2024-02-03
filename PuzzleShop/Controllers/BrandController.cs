@@ -95,6 +95,7 @@ namespace PuzzleShop.Controllers
         [HttpPost("{brandId}/update")]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
+        [ProducesResponseType(404)]
         public IActionResult UpdateBrand(
             int brandId,
             string name,
@@ -113,7 +114,10 @@ namespace PuzzleShop.Controllers
             if (brand == null)
                 return NotFound("Brand with given brandId don't exist");
 
-            if(brand.Name != name)
+            if(!user.IsAdmin && user.Id != brand.OwnerId)
+                return Unauthorized("You don't have access to update this brand.");
+
+            if (brand.Name != name)
             {
                 // name is updated, check is all ok or not
                 var brandAnother = _brandRepository.GetBrandByName(name);
@@ -125,6 +129,36 @@ namespace PuzzleShop.Controllers
             }
 
             brand.Description = description;
+            _brandRepository.Save();
+
+            return Ok();
+        }
+
+        [HttpDelete("{brandId}/delete")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteBrand(
+            int brandId,
+
+            string email,
+            string password
+            )
+        {
+            var user = _auth.Login(email, password);
+            if (user == null)
+                return Unauthorized("Login information is invalid");
+
+            var brand = _brandRepository.GetById<Brand, int>(brandId);
+
+            if (brand == null)
+                return NotFound("Brand with given brandId don't exist");
+
+            if(!user.IsAdmin && brand.OwnerId == user.Id)
+                return Unauthorized("You don't have access to manage this brand.");
+
+            // perform deletion
+            _brandRepository.Delete(brand);
             _brandRepository.Save();
 
             return Ok();
