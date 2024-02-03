@@ -11,8 +11,14 @@ namespace PuzzleShop.Models
 
         public string? Description { get; set; }
 
+        public int OwnerId { get; set; }
+
+        public bool IsConfirmed { get; set; }
+
         // Reference navigation
 
         public ICollection<Puzzle> Puzzles { get; set; }
+
+        public User Owner { get; set; }
     }
 }
