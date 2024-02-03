@@ -146,6 +146,9 @@ namespace PuzzleShop.Controllers
             if (user1 == null)
                 return NotFound("User with given **userId** not founded!");
 
+            if (_userRepository.GetUserByLogin(login) != null)
+                return BadRequest("Someone already use this login");
+
             User? user2 = _authenticationService.Login(email, password);
 
             if (user2 == null)
