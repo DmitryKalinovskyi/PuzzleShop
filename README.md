@@ -10,11 +10,11 @@ This is example project of making API with ASP.NET Core.
 
 ## List of queries for unauthorized access
 
-- ⚠️ GET ```/Puzzle/result?search&page``` - return puzzles by search parameters 
+- ✔️ GET ```/Puzzle/result?search&page``` - return puzzles by search parameters 
 - ✔️ GET ```/Puzzle/{puzzleId}``` - return puzzle by ```puzzleId```
-- ⚠️ GET ```/Brand/result?search&page``` - return brands by search parameters
+- ✔️ GET ```/Brand/result?search&page``` - return brands by search parameters
 - ✔️ GET ```/Brand/{brandId}``` - return brand by ```brandId```
-- ⚠️ GET ```/Brand/{brandId}/owned?search&page``` - return puzzles by search parameters that owned by brand with given ```brandId```
+- ✔️ GET ```/Brand/{brandId}/owned?search&page``` - return puzzles by search parameters that owned by brand with given ```brandId```
 
 ## User information
 - ✔️ GET `/User/{userId}` - return public information about user by `userId`
@@ -69,7 +69,7 @@ This is example project of making API with ASP.NET Core.
           "password": "user_password"
         }
     </details>
-- ⚠️ POST `/User/{userId}/update` - update account password providing email, old and new password
+- ✔️ POST `/User/{userId}/update` - update account password providing email, old and new password
     <details>
       <summary> request body
       </summary>
