@@ -8,8 +8,8 @@ using PuzzleShop.Services;
 
 namespace PuzzleShop.Controllers
 {
-    [Route("[api/controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class BrandController : ControllerBase
     {
         private readonly IBrandRepository _brandRepository;

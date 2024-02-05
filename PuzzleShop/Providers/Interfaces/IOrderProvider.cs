@@ -5,8 +5,6 @@ namespace PuzzleShop.Providers.Interfaces
 {
     public interface IOrderProvider
     {
-        public bool ValidateOrderBody(OrderBody body);
-
-        public Order MakeOrder(User user, List<OrderItem> puzzles);
+        public Order MakeOrder(User user, OrderBody body);
     }
 }

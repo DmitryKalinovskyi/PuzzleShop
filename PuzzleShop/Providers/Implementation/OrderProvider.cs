@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PuzzleShop.Controllers.RequestBodies;
 using PuzzleShop.Data;
+using PuzzleShop.Exceptions;
 using PuzzleShop.Models;
 using PuzzleShop.Providers.Interfaces;
 using PuzzleShop.Repository.Interfaces;
@@ -21,32 +22,39 @@ namespace PuzzleShop.Providers.Implementation
             _orderRepository = orderRepository;
         }
 
-        public bool ValidateOrderBody(OrderBody body)
+        public Order MakeOrder(User user, OrderBody body)
         {
-            return true;
-        }
+            // is enought or not?
+            foreach (var orderItem in body.OrderItems)
+            {
+                Puzzle? puzzle = _puzzleRepository.GetById<Puzzle, int>(orderItem.Id);
+                int amount = orderItem.Amount;
 
-        // working on...
-        public Order MakeOrder(User user, List<OrderItem> puzzlesAmount)
-        {
+                if (puzzle == null)
+                    throw new ArgumentNullException($"Puzzle by id: {orderItem.Id} not founded!");
+
+                if(puzzle.Amount < amount)
+                    throw new InsuffienceProductAmountException();
+            }
+
             // at this point suppose the model is valid
 
             var order = new Order()
             {
                 CreatedTime = DateTime.Now,
-                DestinationPlace = user.Address,
+                DestinationPlace = body.Address,
                 Status = OrderStatus.Created
             };
 
             double totalPrice = 0;
 
-            foreach (var puzzleAmount in puzzlesAmount)
+            foreach (var orderItem in body.OrderItems)
             {
-                Puzzle? puzzle = _puzzleRepository.GetById<Puzzle, int>(puzzleAmount.Id);
-                int amount = puzzleAmount.Amount;
-
+                Puzzle? puzzle = _puzzleRepository.GetById<Puzzle, int>(orderItem.Id);
+                int amount = orderItem.Amount;
+                
                 if (puzzle == null)
-                    throw new ArgumentNullException($"Puzzle by id: {puzzleAmount.Id} not founded!");
+                    throw new ArgumentNullException($"Puzzle by id: {orderItem.Id} not founded!");
 
                 double fixedPrice = puzzle.Price * amount;
 

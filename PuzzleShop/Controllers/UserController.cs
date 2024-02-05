@@ -9,8 +9,8 @@ using PuzzleShop.Services;
 
 namespace PuzzleShop.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
@@ -27,6 +27,19 @@ namespace PuzzleShop.Controllers
             _userRepository = userRepository;
             _mapper = mapper;
             _authenticationService = authenticationService;
+        }
+
+        [HttpGet("login")]
+        [ProducesResponseType(200, Type = typeof(UserDto))]
+        [ProducesResponseType(404)]
+        public IActionResult GetUser(string email, string password)
+        {
+            User? user = _authenticationService.Login(email, password);
+
+            if (user == null)
+                return NotFound();
+
+            return Ok(_mapper.Map<UserDto>(user));
         }
 
         [HttpGet("id/{userId}")]
@@ -136,7 +149,6 @@ namespace PuzzleShop.Controllers
             string name,
             string surname,
             string login,
-            string address,
 
             string email,
             string password
@@ -162,7 +174,6 @@ namespace PuzzleShop.Controllers
             user1.Name = name;
             user1.Surname = surname;
             user1.Login = login;
-            user1.Address = address;
 
             _userRepository.Save();
 

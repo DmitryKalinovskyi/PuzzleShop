@@ -8,8 +8,8 @@ using PuzzleShop.Services;
 
 namespace PuzzleShop.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class OrderController : ControllerBase
     {
         public readonly IOrderRepository _orderRepository;
@@ -29,20 +29,22 @@ namespace PuzzleShop.Controllers
         }
 
         [HttpPost("create")]
-        public IActionResult CreateOrder(OrderBody body)
+        public IActionResult CreateOrder([FromBody]OrderBody body)
         {
-            var user = _auth.Login(body.email, body.password);
+            var user = _auth.Login(body.Email, body.Password);
 
             if (user == null)
                 return Unauthorized("Invalid login information");
 
-            // retrive information about ordered items
-            if (_orderProvider.ValidateOrderBody(body) == false)
-                return BadRequest();
-
-            _orderProvider.MakeOrder(user, body.OrderItems);
-
-            return Ok();
+            try
+            {
+                var order = _orderProvider.MakeOrder(user, body);
+                return Ok(order);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

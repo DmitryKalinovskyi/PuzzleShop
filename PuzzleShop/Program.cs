@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PuzzleShop.Data;
+using PuzzleShop.Providers.Implementation;
+using PuzzleShop.Providers.Interfaces;
 using PuzzleShop.Repository.Implementation;
 using PuzzleShop.Repository.Interfaces;
 using PuzzleShop.Services;
@@ -29,6 +31,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IOrderProvider, OrderProvider>();
 
 var app = builder.Build();
 

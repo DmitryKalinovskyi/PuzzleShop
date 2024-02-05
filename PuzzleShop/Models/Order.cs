@@ -15,7 +15,7 @@ namespace PuzzleShop.Models
         Failed // failed due to accident
     }
 
-    [Index(nameof(OrderStatus), IsUnique = false)]
+    [Index(nameof(Status), IsUnique = false)]
     public class Order
     {
         [Key]

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PuzzleShop.Data;
 
@@ -11,9 +12,11 @@ using PuzzleShop.Data;
 namespace PuzzleShop.Migrations
 {
     [DbContext(typeof(PuzzleShopContext))]
-    partial class PuzzleShopContextModelSnapshot : ModelSnapshot
+    [Migration("20240205082237_Typo-Order-Fix")]
+    partial class TypoOrderFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,57 +81,6 @@ namespace PuzzleShop.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("PuzzleShop.Models.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DestinationPlace")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<double>("TotalPrice")
-                        .HasPrecision(2)
-                        .HasColumnType("float(2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Status");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("PuzzleShop.Models.OrderPuzzle", b =>
-                {
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PuzzleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<double>("FixedPrice")
-                        .HasPrecision(2)
-                        .HasColumnType("float(2)");
-
-                    b.HasKey("OrderId", "PuzzleId");
-
-                    b.HasIndex("PuzzleId");
-
-                    b.ToTable("OrderPuzzles");
                 });
 
             modelBuilder.Entity("PuzzleShop.Models.Puzzle", b =>
@@ -233,25 +185,6 @@ namespace PuzzleShop.Migrations
                         .IsRequired();
 
                     b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("PuzzleShop.Models.OrderPuzzle", b =>
-                {
-                    b.HasOne("PuzzleShop.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PuzzleShop.Models.Puzzle", "Puzzle")
-                        .WithMany()
-                        .HasForeignKey("PuzzleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Puzzle");
                 });
 
             modelBuilder.Entity("PuzzleShop.Models.Puzzle", b =>
