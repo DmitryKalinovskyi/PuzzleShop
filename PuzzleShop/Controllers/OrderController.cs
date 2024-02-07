@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PuzzleShop.Controllers.RequestBodies;
 using PuzzleShop.Dto;
+using PuzzleShop.Models;
 using PuzzleShop.Providers.Interfaces;
 using PuzzleShop.Repository.Interfaces;
 using PuzzleShop.Services;
@@ -14,24 +15,24 @@ namespace PuzzleShop.Controllers
     {
         public readonly IOrderRepository _orderRepository;
         public readonly IOrderProvider _orderProvider;
-        public readonly IUserRepository _userRepository;
         public readonly IAuthenticationService _auth;
 
         public OrderController(IOrderRepository orderRepository,
             IOrderProvider orderProvider,
-            IUserRepository userRepository,
             IAuthenticationService authenticationService)
         {
             _orderRepository = orderRepository;
             _orderProvider = orderProvider;
-            _userRepository = userRepository;
             _auth = authenticationService;
         }
 
         [HttpPost("create")]
-        public IActionResult CreateOrder([FromBody]OrderBody body)
+        [ProducesResponseType(typeof(Order), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CreateOrder([FromBody]CreateOrderBody body)
         {
-            var user = _auth.Login(body.Email, body.Password);
+            var user = _auth.Login(body.Login);
 
             if (user == null)
                 return Unauthorized("Invalid login information");
@@ -46,5 +47,51 @@ namespace PuzzleShop.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("{orderId}/update")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateOrder(int orderId, [FromBody] UpdateOrderBody body)
+        {
+            var user = _auth.Login(body.Login);
+
+            if (user == null)
+                return Unauthorized("Invalid login information");
+
+            try
+            {
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("{orderId}/cancel")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(404)]
+        public IActionResult CancelOrder(int orderId, [FromBody]LoginBody login)
+        {
+            var user = _auth.Login(login);
+
+            if (user == null)
+                return Unauthorized("Invalid login information");
+
+            try
+            {
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }

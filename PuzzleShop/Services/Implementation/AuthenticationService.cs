@@ -1,4 +1,5 @@
-﻿using PuzzleShop.Models;
+﻿using PuzzleShop.Controllers.RequestBodies;
+using PuzzleShop.Models;
 using PuzzleShop.Repository.Interfaces;
 using System.Collections;
 using System.Diagnostics;
@@ -72,6 +73,11 @@ namespace PuzzleShop.Services.Implementation
             if (user == null) return null;
 
             return Login(user, password);
+        }
+
+        public User? Login(LoginBody loginBody)
+        {
+            return Login(loginBody.Email, loginBody.Password);
         }
     }
 }

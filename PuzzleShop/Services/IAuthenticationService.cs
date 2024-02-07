@@ -1,4 +1,5 @@
-﻿using PuzzleShop.Models;
+﻿using PuzzleShop.Controllers.RequestBodies;
+using PuzzleShop.Models;
 
 namespace PuzzleShop.Services
 {
@@ -7,6 +8,8 @@ namespace PuzzleShop.Services
         User? Login(User user, string password);
 
         User? Login(string email, string password);
+
+        User? Login(LoginBody loginBody);
 
         User Register(User user, string password);
 

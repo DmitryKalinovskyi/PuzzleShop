@@ -10,9 +10,11 @@ namespace PuzzleShop.Models
         Delivered, 
 
         // just store in the history
-        Tooken, 
+        Completed, 
         Canceled, // client decided to break the order
-        Failed // failed due to accident
+        Failed, // failed due to accident
+
+        Confirmed // the state before delivering
     }
 
     [Index(nameof(Status), IsUnique = false)]
@@ -32,5 +34,7 @@ namespace PuzzleShop.Models
         public double TotalPrice { get; set; }
 
         public string DestinationPlace { get; set; }
+
+        public int? UserMakedId { get; set; }
     }
 }
